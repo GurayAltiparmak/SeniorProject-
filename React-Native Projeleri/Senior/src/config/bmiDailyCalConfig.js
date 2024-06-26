@@ -1,0 +1,1 @@
+export const rapidAPIBMIKey = '811594b194msh80e57ba9ed2198cp10f6cbjsn7484dc497534';

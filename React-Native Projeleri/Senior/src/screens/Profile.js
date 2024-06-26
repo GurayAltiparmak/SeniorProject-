@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { checkAuth } from '../api/authAPI';
+import { Picker } from '@react-native-picker/picker';
+import { fetchBMIFromInputs } from '../api/dailyCalandBMIAPI';
 
 const Profile = () => {
   const [userFullName, setUserFullName] = useState('');
   const [userWeight, setWeight] = useState('');
   const [userHeight, setHeight] = useState('');
-  const [measurementUnit, setMeasurementUnit] = useState('std'); // std or met
+  const [inputWeight, setInputWeight] = useState('');
+  const [inputHeight, setInputHeight] = useState('');
   const [age, setAge] = useState('');
-  const [sex, setSex] = useState('female'); // female or male
-  const [pregnancyLactating, setPregnancyLactating] = useState('none'); // none, pregnant, lactating1st, lactating2nd
-  const [activityLevel, setActivityLevel] = useState('Inactive'); // Inactive, Low Active, Active, Very Active
+  const [sex, setSex] = useState('female');
+  const [pregnancyLactating, setPregnancyLactating] = useState('none');
+  const [activityLevel, setActivityLevel] = useState('Inactive');
+  const [bmiData, setBmiData] = useState(null);
+  const [dailyCalorie, setDailyCalorie] = useState(null);
+  const [pregnantWeeks, setPregnantWeeks] = useState('');
+  const [prePregnantWeight, setPrePregnantWeight] = useState('');
+
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -30,42 +39,149 @@ const Profile = () => {
     fetchUserInfo();
   }, []);
 
-  const handleMeasurementUnitChange = (unit) => {
-    setMeasurementUnit(unit);
-    // Clear weight and height when switching units
-    setWeight('');
-    setHeight('');
+  const handleCalculateDailyCalorie = async () => {
+    if (!age || !inputHeight || !inputWeight) {
+      alert('Missing Information', 'Please fill in all required fields.');
+      return;
+    }
+
+    try {
+      let data;
+      if (pregnancyLactating === 'pregnant') {
+        if (!pregnantWeeks || !prePregnantWeight) {
+          alert('Missing Information', 'Please fill in all required fields for pregnancy.');
+          return;
+        }
+        data = await fetchBMIFromInputs(sex, age, inputHeight, inputWeight, pregnancyLactating, activityLevel, pregnantWeeks, prePregnantWeight);
+      } else {
+        if (!['Low Active', 'Very Active', 'Active', 'Inactive'].includes(activityLevel)) {
+          alert('Invalid Information', 'Please select a valid activity level.');
+          return;
+        }
+        data = await fetchBMIFromInputs(sex, age, inputHeight, inputWeight, pregnancyLactating, activityLevel);
+      }
+
+      console.log('BMI Data:', data);
+      setBmiData(data.BMI_EER.BMI);
+      setDailyCalorie(data.BMI_EER['Estimated Daily Caloric Needs']);
+    } catch (error) {
+      console.error('Error calculating daily calorie:', error);
+      alert('Error', 'Failed to calculate daily calorie. Please try again later.');
+    }
+  };
+
+  const renderResults = () => {
+    if (bmiData !== null && dailyCalorie !== null) {
+      return (
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText}>BMI: {bmiData}</Text>
+          <Text style={styles.resultText}>Daily Calorie You Need To Take: {dailyCalorie}</Text>
+        </View>
+      );
+    }
+    return null;
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      ref={scrollViewRef}
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.header}>
         <Text style={styles.title}>Profile</Text>
       </View>
 
-      <View style={styles.fullNameContainer}>
-        <Text style={styles.fullName}>{userFullName}</Text>
-      </View>
-
-      <View style={styles.measurementsContainer}>
-        <Text style={styles.measurementsText}>Height: {userHeight} {measurementUnit === 'std' ? 'feet' : 'cm'}</Text>
-        <Text style={styles.measurementsText}>Weight: {userWeight} {measurementUnit === 'std' ? 'ibs' : 'kg'}</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.value}>{userFullName}</Text>
+        <View style={styles.row}>
+          <Text style={styles.label}>Height:</Text>
+          <Text style={styles.value}> {userHeight} cm</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Weight:</Text>
+          <Text style={styles.value}> {userWeight} kg</Text>
+        </View>
       </View>
 
       <View style={styles.inputContainer}>
-        <View style={styles.measurementUnitContainer}>
+        <View style={styles.radioContainer}>
+          <Text style={styles.radioLabel}>Sex:  </Text>
           <TouchableOpacity
-            style={[styles.measurementUnitButton, measurementUnit === 'std' && styles.activeMeasurementButton]}
-            onPress={() => handleMeasurementUnitChange('std')}
+            style={[styles.radioButton, sex === 'female' && styles.activeRadioButton]}
+            onPress={() => {
+              setSex('female');
+              setPregnancyLactating('none');
+            }}
           >
-            <Text style={[styles.measurementUnitButtonText, measurementUnit === 'std' && styles.activeMeasurementButtonText]}>STD</Text>
+            <Text style={[styles.radioText, sex === 'female' && styles.activeRadioText]}>Female</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.measurementUnitButton, measurementUnit === 'met' && styles.activeMeasurementButton]}
-            onPress={() => handleMeasurementUnitChange('met')}
+            style={[styles.radioButton, sex === 'male' && styles.activeRadioButton]}
+            onPress={() => {
+              setSex('male');
+              setPregnancyLactating('none');
+            }}
           >
-            <Text style={[styles.measurementUnitButtonText, measurementUnit === 'met' && styles.activeMeasurementButtonText]}>MET</Text>
+            <Text style={[styles.radioText, sex === 'male' && styles.activeRadioText]}>Male</Text>
           </TouchableOpacity>
+        </View>
+
+        <View style={styles.dropdownContainer}>
+          <Text style={styles.dropdownLabel}>Pregnancy / Lactating:</Text>
+          <Picker
+            selectedValue={pregnancyLactating}
+            style={[styles.dropdown, sex === 'male' && { opacity: 0.5 }]}
+            enabled={sex !== 'male'}
+            onValueChange={(itemValue) => {
+              setPregnancyLactating(itemValue);
+            }}
+          >
+            <Picker.Item label="None" value="none" />
+            <Picker.Item label="Pregnant" value="pregnant" />
+            <Picker.Item label="Lactating 1st" value="lactating1st" />
+            <Picker.Item label="Lactating 2nd" value="lactating2nd" />
+          </Picker>
+        </View>
+
+        {pregnancyLactating === 'pregnant' && (
+          <View style={styles.pregnancyContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Pregnant Week"
+              keyboardType="numeric"
+              value={pregnantWeeks}
+              onChangeText={(text) => {
+                setPregnantWeeks(text);
+              }}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Weight Before Pregnancy"
+              keyboardType="numeric"
+              value={prePregnantWeight}
+              onChangeText={(text) => {
+                setPrePregnantWeight(text);
+              }}
+            />
+          </View>
+        )}
+
+        <View style={styles.dropdownContainer}>
+          <Text style={styles.dropdownLabel}>Activity Level:</Text>
+          <Picker
+            selectedValue={activityLevel}
+            style={styles.dropdown}
+            onValueChange={(itemValue) => {
+              setActivityLevel(itemValue);
+            }}
+          >
+            <Picker.Item label="Inactive" value="Inactive" />
+            <Picker.Item label="Low Active" value="Low Active" />
+            <Picker.Item label="Active" value="Active" />
+            <Picker.Item label="Very Active" value="Very Active" />
+          </Picker>
         </View>
 
         <TextInput
@@ -73,93 +189,46 @@ const Profile = () => {
           placeholder="Age"
           keyboardType="numeric"
           value={age}
-          onChangeText={(text) => setAge(text)}
+          onChangeText={(text) => {
+            setAge(text);
+          }}
         />
 
-        <View style={styles.radioContainer}>
-          <Text>Sex:</Text>
-          <TouchableOpacity
-            style={[styles.radioButton, sex === 'female' && styles.activeRadioButton]}
-            onPress={() => setSex('female')}
-          >
-            <Text style={[styles.radioText, sex === 'female' && styles.activeRadioText]}>Female</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.radioButton, sex === 'male' && styles.activeRadioButton]}
-            onPress={() => setSex('male')}
-          >
-            <Text style={[styles.radioText, sex === 'male' && styles.activeRadioText]}>Male</Text>
-          </TouchableOpacity>
-        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Height"
+          keyboardType="numeric"
+          value={inputHeight}
+          onChangeText={(text) => {
+            setInputHeight(text);
+          }}
+        />
 
-        <View style={styles.checkboxContainer}>
-          <Text>Pregnancy / Lactating:</Text>
-          <TouchableOpacity
-            style={[styles.checkbox, pregnancyLactating === 'none' && styles.activeCheckbox]}
-            onPress={() => setPregnancyLactating('none')}
-          >
-            <Text style={[styles.checkboxText, pregnancyLactating === 'none' && styles.activeCheckboxText]}>None</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.checkbox, pregnancyLactating === 'pregnant' && styles.activeCheckbox]}
-            onPress={() => setPregnancyLactating('pregnant')}
-          >
-            <Text style={[styles.checkboxText, pregnancyLactating === 'pregnant' && styles.activeCheckboxText]}>Pregnant</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.checkbox, pregnancyLactating === 'lactating1st' && styles.activeCheckbox]}
-            onPress={() => setPregnancyLactating('lactating1st')}
-          >
-            <Text style={[styles.checkboxText, pregnancyLactating === 'lactating1st' && styles.activeCheckboxText]}>Lactating 1st</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.checkbox, pregnancyLactating === 'lactating2nd' && styles.activeCheckbox]}
-            onPress={() => setPregnancyLactating('lactating2nd')}
-          >
-            <Text style={[styles.checkboxText, pregnancyLactating === 'lactating2nd' && styles.activeCheckboxText]}>Lactating 2nd</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.activityLevelContainer}>
-          <Text>Activity Level:</Text>
-          <TouchableOpacity
-            style={[styles.activityLevelButton, activityLevel === 'Inactive' && styles.activeActivityLevelButton]}
-            onPress={() => setActivityLevel('Inactive')}
-          >
-            <Text style={[styles.activityLevelButtonText, activityLevel === 'Inactive' && styles.activeActivityLevelButtonText]}>Inactive</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.activityLevelButton, activityLevel === 'Low Active' && styles.activeActivityLevelButton]}
-            onPress={() => setActivityLevel('Low Active')}
-          >
-            <Text style={[styles.activityLevelButtonText, activityLevel === 'Low Active' && styles.activeActivityLevelButtonText]}>Low Active</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.activityLevelButton, activityLevel === 'Active' && styles.activeActivityLevelButton]}
-            onPress={() => setActivityLevel('Active')}
-          >
-            <Text style={[styles.activityLevelButtonText, activityLevel === 'Active' && styles.activeActivityLevelButtonText]}>Active</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.activityLevelButton, activityLevel === 'Very Active' && styles.activeActivityLevelButton]}
-            onPress={() => setActivityLevel('Very Active')}
-          >
-            <Text style={[styles.activityLevelButtonText, activityLevel === 'Very Active' && styles.activeActivityLevelButtonText]}>Very Active</Text>
-          </TouchableOpacity>
-        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Weight"
+          keyboardType="numeric"
+          value={inputWeight}
+          onChangeText={(text) => {
+            setInputWeight(text);
+          }}
+        />
       </View>
 
-      <TouchableOpacity style={styles.calorieButton} onPress={() => console.log('Calculate Daily Calorie')}>
+      <TouchableOpacity style={styles.calorieButton} onPress={handleCalculateDailyCalorie}>
         <Text style={styles.calorieButtonText}>Calculate Daily Calorie</Text>
       </TouchableOpacity>
-    </View>
+
+      {renderResults()}
+
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
+    flexGrow: 1,
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
@@ -170,135 +239,108 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#361518',
   },
-  fullNameContainer: {
-    flexDirection: 'row',
+  infoContainer: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
     alignItems: 'center',
-    marginTop: 10,
   },
-  fullName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 2,
+    width: '100%',
   },
-  measurementsContainer: {
-    marginTop: 20,
-  },
-  measurementsText: {
+  label: {
     fontSize: 16,
-    color: '#333',
-    marginBottom: 5,
+    fontWeight: 'bold',
+    color: '#361518',
+  },
+  value: {
+    fontSize: 16,
+    color: '#361518',
   },
   inputContainer: {
-    marginTop: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 10,
-  },
-  measurementUnitContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  measurementUnitButton: {
-    backgroundColor: '#e5e5e5',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-  },
-  measurementUnitButtonText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  activeMeasurementButton: {
-    backgroundColor: '#b71515',
-  },
-  activeMeasurementButtonText: {
-    color: '#fff',
+    marginBottom: 20,
   },
   radioContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
   },
-  radioButton: {
-    backgroundColor: '#e5e5e5',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginRight: 10,
+  radioLabel: {
+    fontSize: 16,
+    color: '#361518',
   },
-  radioText: {
-    fontSize: 14,
-    color: '#333',
+  radioButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
   },
   activeRadioButton: {
-    backgroundColor: '#b71515',
+    backgroundColor: '#b6d877',
+    borderRadius: 5,
+  },
+  radioText: {
+    fontSize: 16,
+    marginLeft: 5,
+    marginRight: 10,
+    color: '#361518',
   },
   activeRadioText: {
-    color: '#fff',
+    fontWeight: 'bold',
   },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
+  dropdownContainer: {
+    marginBottom: 15,
   },
-  checkbox: {
-    backgroundColor: '#e5e5e5',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+  dropdownLabel: {
+    fontSize: 16,
+    color: '#361518',
+  },
+  dropdown: {
+    backgroundColor: '#f0f0f0',
     borderRadius: 5,
-    marginRight: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    color: '#361518',
   },
-  checkboxText: {
-    fontSize: 14,
-    color: '#333',
-  },
-  activeCheckbox: {
-    backgroundColor: '#b71515',
-  },
-  activeCheckboxText: {
-    color: '#fff',
-  },
-  activityLevelContainer: {
+  pregnancyContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
+    justifyContent: 'space-between',
+    marginBottom: 15,
   },
-  activityLevelButton: {
-    backgroundColor: '#e5e5e5',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+  input: {
+    backgroundColor: '#f0f0f0',
     borderRadius: 5,
-    marginRight: 10,
-  },
-  activityLevelButtonText: {
-    fontSize: 14,
-    color: '#333',
-  },
-  activeActivityLevelButton: {
-    backgroundColor: '#b71515',
-  },
-  activeActivityLevelButtonText: {
-    color: '#fff',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: 10,
+    color: '#361518',
   },
   calorieButton: {
-    backgroundColor: '#b71515',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    backgroundColor: '#b6d877',
+    paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 20,
+    marginBottom: 20,
   },
   calorieButtonText: {
-    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  resultContainer: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+  },
+  resultText: {
     fontSize: 16,
+    color: '#361518',
   },
 });
 

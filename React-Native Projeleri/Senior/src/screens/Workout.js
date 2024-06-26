@@ -1,196 +1,120 @@
-import { StyleSheet, Text, View, ScrollView, ImageBackground, Touchable, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { useNavigation } from '@react-navigation/native'
-
+import React from 'react';
+import { StyleSheet, Text, View, ScrollView, ImageBackground, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Workout = () => {
   const navigation = useNavigation();
-  const goBackPage = () => {
-    navigation.navigate("BackDayWorkoutList");
-  }
-  const goChestPage = () => {
-    navigation.navigate("ChestDayWorkoutList");
-  }
-  const goBicepsPage = () => {
-    navigation.navigate("BicepsDayWorkoutList");
-  }
-  const goShoulderPage = () => {
-    navigation.navigate("ShoulderDayWorkoutList");
-  }
-  const goTricepsPage = () => {
-    navigation.navigate("TricepsDayWorkoutList");
-  }
-  const goLegPage = () => {
-    navigation.navigate("LegDayWorkoutList");
-  }
-  const goAbsDay = () => {
-    navigation.navigate("AbsDayWorkoutList");
-  }
+
+  const navigateTo = (screenName) => {
+    navigation.navigate(screenName);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}> Welcome </Text>
-      </View>
-      
-      <View>
-       
-        <ScrollView style={styles.scrollMenu}>
-
-          <View style={styles.movementContainer}>
-            <TouchableOpacity onPress={goBackPage} style={styles.touchContainer}>
-              <ImageBackground source={require('../assets/images/BodyParts/backDay.png')} style={styles.partsBackground}>
-                <View style={styles.containerInPhoto}>
-                  <Text style={styles.containerInText}>Back</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.movementContainer}>
-            <TouchableOpacity onPress={goChestPage} style={styles.touchContainer}>
-              <ImageBackground source={require('../assets/images/BodyParts/chestDay.png')} style={styles.partsBackground}>
-                <View style={styles.containerInPhoto}>
-                  <Text style={styles.containerInText}>Chest</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
-
-          <View style={styles.movementContainer}>
-            <TouchableOpacity onPress={goBicepsPage} style={styles.touchContainer}>
-              <ImageBackground
-                source={require('../assets/images/BodyParts/bicepsDay.png')}
-                style={styles.partsBackground}
-                resizeMode='cover'
-              >
-                <View style={styles.containerInPhoto}>
-                  <Text style={styles.containerInText}>Biceps</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
-
-          <View style={styles.movementContainer}>
-            <TouchableOpacity onPress={goShoulderPage} style={styles.touchContainer}>
-              <ImageBackground
-                source={require('../assets/images/BodyParts/shoulderDay.png')}
-                style={styles.partsBackground}
-                resizeMode='cover'
-              >
-                <View style={styles.containerInPhoto}>
-                  <Text style={styles.containerInText}>Shoulder</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.movementContainer}>
-            <TouchableOpacity onPress={goTricepsPage} style={styles.touchContainer}>
-              <ImageBackground
-                source={require('../assets/images/BodyParts/tricepDays.png')}
-                style={styles.partsBackground}
-                resizeMode='cover'
-              >
-                <View style={styles.containerInPhoto}>
-                  <Text style={styles.containerInText}>Triceps</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
-
-          <View style={styles.movementContainer}>
-            <TouchableOpacity onPress={goLegPage} style={styles.touchContainer}>
-              <ImageBackground
-                source={require('../assets/images/BodyParts/legDay.png')}
-                style={styles.partsBackground}
-                resizeMode='cover'
-              >
-                <View style={styles.containerInPhoto}>
-                  <Text style={styles.containerInText}>Leg</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
-
-          <View style={styles.movementContainer}>
-            <TouchableOpacity onPress={goAbsDay} style={styles.touchContainer}>
-              <ImageBackground
-                source={require('../assets/images/BodyParts/absDay.png')}
-                style={styles.partsBackground}
-                resizeMode='cover'
-              >
-                <View style={styles.containerInPhoto}>
-                  <Text style={styles.containerInText}>ABS</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
-        </ScrollView>
-        
+        <Text style={styles.headerText}>FotoDiet</Text>
       </View>
 
+      <ScrollView style={styles.scrollMenu} contentContainerStyle={styles.scrollContent}>
+        <TouchableOpacity onPress={() => navigateTo("BackDayWorkoutList")} style={styles.movementContainer}>
+          <ImageBackground source={require('../assets/images/BodyParts/backDay.png')} style={styles.partsBackground}>
+            <Text style={styles.containerInText}>Back</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigateTo("ChestDayWorkoutList")} style={styles.movementContainer}>
+          <ImageBackground source={require('../assets/images/BodyParts/chestDay.png')} style={styles.partsBackground}>
+            <Text style={styles.containerInText}>Chest</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigateTo("BicepsDayWorkoutList")} style={styles.movementContainer}>
+          <ImageBackground source={require('../assets/images/BodyParts/bicepsDay.png')} style={styles.partsBackground}>
+            <Text style={styles.containerInText}>Biceps</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigateTo("ShoulderDayWorkoutList")} style={styles.movementContainer}>
+          <ImageBackground source={require('../assets/images/BodyParts/shoulderDay.png')} style={styles.partsBackground}>
+            <Text style={styles.containerInText}>Shoulder</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigateTo("TricepsDayWorkoutList")} style={styles.movementContainer}>
+          <ImageBackground source={require('../assets/images/BodyParts/tricepDays.png')} style={styles.partsBackground}>
+            <Text style={styles.containerInText}>Triceps</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigateTo("LegDayWorkoutList")} style={styles.movementContainer}>
+          <ImageBackground source={require('../assets/images/BodyParts/legDay.png')} style={styles.partsBackground}>
+            <Text style={styles.containerInText}>Leg</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigateTo("AbsDayWorkoutList")} style={styles.movementContainer}>
+          <ImageBackground source={require('../assets/images/BodyParts/absDay.png')} style={styles.partsBackground}>
+            <Text style={styles.containerInText}>Abs</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
-    
-  )
-}
+  );
+};
 
-export default Workout
+export default Workout;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#303642',
   },
   headerContainer: {
-    borderWidth: 1,
-    justifyContent: 'flex-start',
-    width: '%100',
-    height: 45,
-    backgroundColor: '#eb2525',
-    borderColor: '#ff2525'
-
+    height: 65,
+    backgroundColor: '#303642',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: '#303642',
   },
   headerText: {
-    fontSize: 24,
-    color: 'white',
-    fontWeight: '400',
-    textAlign: 'center',
-    justifyContent: 'center'
+    fontSize: 29,
+    color: '#b6d877',
+    fontWeight: 'bold',
+    marginTop: 20,
+    textTransform: 'uppercase', 
+    letterSpacing: 4, 
   },
   scrollMenu: {
-    flexGrow: 1,
-    position:'relative',
-    marginBottom: 43,
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  scrollContent: {
+    paddingVertical: 20,
   },
   movementContainer: {
-    borderWidth: 1,
-    height: 130,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  touchContainer: {
-    flex: 1,
+    height: 150,
+    marginBottom: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   partsBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  containerInPhoto: {
-    flex: 1,
-    justifyContent: 'flex-end'
-  },
   containerInText: {
-    fontSize: 35,
-    fontWeight: '220',
-    color: 'white',
+    fontSize: 24,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 5,
-  }
-})
+    textShadowColor: '#303642',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    borderRadius: 10,
+    marginTop: 80,
+  },
+});

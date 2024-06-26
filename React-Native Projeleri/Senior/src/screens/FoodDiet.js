@@ -50,10 +50,10 @@ const FoodDiet = () => {
 
     return (
       <View style={{ width: screenWidth, justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ marginLeft, marginRight, }}>
+        <View style={{ marginLeft, marginRight }}>
           <Image
             source={item.image}
-            style={{ height: 200, width: screenWidth * 0.9, borderRadius: 40 }}
+            style={{ height: 200, width: screenWidth * 0.9, borderRadius: 20 }}
             resizeMode="cover" 
           />
         </View>
@@ -149,7 +149,7 @@ export default FoodDiet;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     paddingTop: 20,
   },
@@ -160,22 +160,20 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     width: '90%',
-    backgroundColor: '#fff',
+    backgroundColor: '#b6d877',
     borderRadius: 10,
-    marginVertical: 2,
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   searchInput: {
     height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingLeft: 10,
+    color: '#303642',
   },
   categoryContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 40,
+    marginTop: 20,
     width: '90%',
   },
   categoryBox: {
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   categoryText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -199,4 +197,3 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-

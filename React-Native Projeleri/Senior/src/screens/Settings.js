@@ -20,8 +20,6 @@ const Settings = () => {
 
   return (
     <View style = {styles.container}>
-      <Text style={styles.buttonText}>Dashboard Screen</Text>
-
       <TouchableOpacity style={styles.buttonContainer} onPress={handleLogout}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
@@ -36,21 +34,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#343541',
+    backgroundColor: '#303642',
     padding: 20,
   },
   buttonContainer: {
-    width: '70%',
+    width: '80%',
     height: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#b6d877',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginTop: 10,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 27,
     color: 'white',
-    fontWeight: 'bold',
+    fontWeight: '%500',
   },
 })

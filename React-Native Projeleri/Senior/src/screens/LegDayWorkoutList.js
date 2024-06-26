@@ -80,12 +80,12 @@ const LegDayWorkoutList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#161616',
+    backgroundColor: '#303642',
     paddingHorizontal: 20,
     paddingTop: 40,
   },
   goBackButton: {
-    backgroundColor: '#ff6f61',
+    backgroundColor: '#303642',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 50,
@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   goBackButtonText: {
-    color: '#ffffff',
+    color: '#b6d877',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   exerciseContainer: {
-    backgroundColor: '#212121',
+    backgroundColor: '#232c37',
     padding: 20,
     marginBottom: 20,
     borderRadius: 15,
