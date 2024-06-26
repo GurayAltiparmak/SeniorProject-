@@ -1,5 +1,5 @@
 import config from "../config/config";
-
+//kayıt 
 export const registerAuth = async (fullname, email,password) =>{
     try {
         const response = await fetch(config.register, {
@@ -22,8 +22,7 @@ export const registerAuth = async (fullname, email,password) =>{
         console.log('Error fetching data:', error);
     }
 }
-
-
+//giris bilgileri kontrolu
 export const loginAuth = async (email,password) =>{
     try {
         const response = await fetch(config.login, {
@@ -45,7 +44,7 @@ export const loginAuth = async (email,password) =>{
         console.log('Error fetching data:', error);
     }
 }
-
+//log kontrol 
 export const checkAuth = async () =>{
     try {
         const response = await fetch(config.checkAuth, {
@@ -63,7 +62,7 @@ export const checkAuth = async () =>{
         console.log('Error fetching data:', error);
     }
 }
-
+//cikis api
 export const logout = async () =>{
     try {
         const response = await fetch(config.logout, {
@@ -81,7 +80,7 @@ export const logout = async () =>{
         console.log('Error fetching data:', error);
     }
 }
-//--------------------------------------------------------------------------------
+//olculeri alma 
 export const getMeasurements = async () => {
     try {
         const response = await fetch(config.getMeasurements,{
@@ -99,6 +98,7 @@ export const getMeasurements = async () => {
 
 }
 
+//olculeri guncelleme
 export const updateMeasurements = async (boy,kilo) => {
     try {
         const response = await fetch(config.updateMeasurements, {

@@ -59,7 +59,6 @@ router.get('/get-measurements', async (req, res) => {
     }
 });
 
-//bitiş
 
 router.post("/register", async (req, res) => {
     try {
