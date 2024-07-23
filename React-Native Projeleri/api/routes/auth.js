@@ -121,7 +121,7 @@ function generateToken() {
 }
 
 function sendVerificationEmail(email, verificationToken) {
-    const verificationLink = `http://192.168.1.105:3000/verify/${verificationToken}`
+    const verificationLink = `http://172.20.10.7:3000/verify/${verificationToken}`
 
     const mailOptions = {
         from: "fotodietnutrionandtraining@gmail.com",

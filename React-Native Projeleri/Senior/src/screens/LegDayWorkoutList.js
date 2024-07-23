@@ -59,7 +59,7 @@ const LegDayWorkoutList = () => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator size="large" color="#ff6f61" style={styles.loadingIndicator} />
+        <ActivityIndicator size="large" color="#b6d877" style={styles.loadingIndicator} />
       ) : (
         <>
           <FlatList

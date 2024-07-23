@@ -42,11 +42,11 @@ export default function RegisterScreen() {
         
         <View style={styles.overlay}>
         
-          <Text style={styles.title}>Join<Text style={{color:'#b71515' , fontSize: 27}}> Us!</Text></Text>
+          <Text style={styles.title}>Join<Text style={{color:'#b6d877' , fontSize: 33}}> Us!</Text></Text>
           <TextInput
             style={styles.inputFullname}
             placeholder='Fullname'
-            placeholderTextColor={'#a3a3a3'}
+            placeholderTextColor={'#b6d877'}
             keyboardType='name-phone-pad'
             onChangeText={setFullname}
             value={fullname}
@@ -54,7 +54,7 @@ export default function RegisterScreen() {
           <TextInput
             style={styles.inputEmail}
             placeholder='E-mail'
-            placeholderTextColor={'#a3a3a3'}
+            placeholderTextColor={'#b6d877'}
             keyboardType='email-address'
             onChangeText={setEmail}
             value={email}
@@ -62,7 +62,7 @@ export default function RegisterScreen() {
           <TextInput
             style={styles.inputPassword}
             placeholder='Password'
-            placeholderTextColor={'#a3a3a3'}
+            placeholderTextColor={'#b6d877'}
             secureTextEntry
             onChangeText={setPassword}
             value={password}
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 15,
+    marginBottom: 18,
     color: '#e0e0e0',
   },
   inputEmail: {
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     marginBottom: 5,
     paddingHorizontal: 20,
-    color: '#a3a3a3',
+    color: '#b6d877',
 
   },
   inputFullname: {
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     marginBottom: 5,
     paddingHorizontal: 20,
-    color: '#a3a3a3',
+    color: '#b6d877',
 
   },
   inputPassword: {
@@ -132,21 +132,21 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     marginBottom: 30,
     paddingHorizontal: 20,
-    color: '#a3a3a3',
+    color: '#b6d877',
 
   },
   buttonContainer: {
     width: '50%',
     height: 45,
     borderWidth: 1,
-    backgroundColor: '#b71515',
-    borderColor: '#7c2323',
+    backgroundColor: '#b6d877',
+    borderColor: '#b6d877',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 30,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 18,
     color: 'white',
     fontWeight:'500',
   },
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   loginScreenButton: {
-    color:'#b71515',
+    color:'#b6d877',
     fontSize: 15,
     fontWeight:'bold'
   },

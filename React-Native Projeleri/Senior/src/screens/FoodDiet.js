@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, Dimensions, Image, TextInput, TouchableOpacity, ImageBackground, Animated } from 'react-native';
 
@@ -6,6 +7,7 @@ const FoodDiet = () => {
   const flatlistRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
+  const navigation = useNavigation();
 
   const carouselData = [
     {
@@ -69,7 +71,7 @@ const FoodDiet = () => {
   };
 
   const goCategory = (category) => {
-    console.log(`${category} clicked`);
+    navigation.navigate(category);
   };
 
   return (
@@ -104,7 +106,7 @@ const FoodDiet = () => {
       </View>
 
       <View style={styles.categoryContainer}>
-        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('Breakfast')}>
+        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('BreakfastScreen')}>
           <ImageBackground
             source={require('../assets/images/FoodList/breakfastAlternative.jpg')}
             style={styles.categoryImage}
@@ -113,7 +115,7 @@ const FoodDiet = () => {
           </ImageBackground>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('Lunch')}>
+        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('LunchScreen')}>
           <ImageBackground
             source={require('../assets/images/FoodList/lunch.jpg')}
             style={styles.categoryImage}
@@ -122,7 +124,7 @@ const FoodDiet = () => {
           </ImageBackground>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('Dinner')}>
+        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('DinnerScreen')}>
           <ImageBackground
             source={require('../assets/images/FoodList/dinnerOriginal.jpg')}
             style={styles.categoryImage}
@@ -131,7 +133,7 @@ const FoodDiet = () => {
           </ImageBackground>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('Snack')}>
+        <TouchableOpacity style={styles.categoryBox} onPress={() => goCategory('SnackScreen')}>
           <ImageBackground
             source={require('../assets/images/FoodList/healthySnacks.jpg')}
             style={styles.categoryImage}

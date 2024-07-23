@@ -11,6 +11,10 @@ import ShoulderDayWorkoutList from '../screens/ShoulderDayWorkoutList';
 import TricepsDayWorkoutList from '../screens/TricepsDayDayWorkoutList';
 import LegDayWorkoutList from '../screens/LegDayWorkoutList';
 import AbsDayWorkoutList from '../screens/AbsDayWorkoutList';
+import BreakfastScreen from '../screens/BreakfastScreen';
+import LunchScreen from '../screens/LunchScreen';
+import DinnerScreen from '../screens/DinnerScreen';
+import SnackScreen from '../screens/SnackScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +32,10 @@ export default function MainNavigation() {
                 <Stack.Screen options={{headerShown: false}}name ="LegDayWorkoutList" component={LegDayWorkoutList}/>
                 <Stack.Screen options={{headerShown: false}}name ="AbsDayWorkoutList" component={AbsDayWorkoutList}/>
                 <Stack.Screen options={{headerShown: false}} name="BottomTabNavigator" component={BottomTabNavigator}/>
+                <Stack.Screen options={{headerShown: false}} name="BreakfastScreen" component={BreakfastScreen}/>
+                <Stack.Screen options={{headerShown: false}} name="LunchScreen" component={LunchScreen}/>
+                <Stack.Screen options={{headerShown: false}} name="DinnerScreen" component={DinnerScreen}/>
+                <Stack.Screen options={{headerShown: false}} name="SnackScreen" component={SnackScreen}/>
             </Stack.Navigator>
 
         </NavigationContainer>

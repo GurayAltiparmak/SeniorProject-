@@ -57,7 +57,7 @@ export default function LoginScreen() {
         source={require('../assets/images/Login.png')}
       >
         <View style={styles.overlay}>
-          <Text style={styles.textLabel} >Be The Best <Text style={{ color: '#b71515', fontSize: 45 }} >Version</Text> Of You</Text>
+          <Text style={styles.textLabel} >Be The Best <Text style={{ color: '#b6d877', fontSize: 45 }} >Version</Text> Of You</Text>
 
           <TextInput
             style={styles.inputEmail}
@@ -144,8 +144,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 30,
     marginBottom: 7,
-    backgroundColor: '#b71515',
-    borderColor: '#7c2323',
+    backgroundColor: '#b6d877',
+    borderColor: '#b6d877',
 
   },
   btnText: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
 
   },
   registerText:{
-    color:'#b71515',
+    color:'#b6d877',
     fontSize: 17,
 
   },
