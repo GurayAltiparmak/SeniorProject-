@@ -15,6 +15,7 @@ import BreakfastScreen from '../screens/BreakfastScreen';
 import LunchScreen from '../screens/LunchScreen';
 import DinnerScreen from '../screens/DinnerScreen';
 import SnackScreen from '../screens/SnackScreen';
+import MlModelScreen from '../screens/MlModelScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ export default function MainNavigation() {
                 <Stack.Screen options={{headerShown: false}} name="LunchScreen" component={LunchScreen}/>
                 <Stack.Screen options={{headerShown: false}} name="DinnerScreen" component={DinnerScreen}/>
                 <Stack.Screen options={{headerShown: false}} name="SnackScreen" component={SnackScreen}/>
+                <Stack.Screen options={{headerShown: false}} name="MlModelScreen" component={MlModelScreen}/>
             </Stack.Navigator>
 
         </NavigationContainer>

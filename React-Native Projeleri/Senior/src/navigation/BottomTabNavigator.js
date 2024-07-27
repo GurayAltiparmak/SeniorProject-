@@ -4,6 +4,7 @@ import Workout from "../screens/Workout";
 import Settings from "../screens/Settings";
 import FoodDiet from "../screens/FoodDiet";
 import Profile from "../screens/Profile";
+import MlModelScreen from '../screens/MlModelScreen';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import FAwesome5 from "react-native-vector-icons/FontAwesome5";
 import SLIcons from "react-native-vector-icons/SimpleLineIcons";
@@ -51,6 +52,16 @@ export default function BottomTabNavigator() {
                         ),
                     }}
                 />
+                <Tab.Screen
+                    name="MlModelScreen"
+                    component={MlModelScreen}
+                    options={{
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="robot-happy-outline" size={32} color={color} />
+                        ),
+                    }}
+                />                
                 <Tab.Screen
                     name="Profile"
                     component={Profile}
